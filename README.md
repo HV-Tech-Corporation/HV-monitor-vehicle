@@ -8,7 +8,7 @@ email : hanbini2008@naver.com
 - 김태훈 (Kim Tae hun) [Github](http://github.com/aksmf98)
 email : aksmf98@naver.com
 - 장윤재 (Jang Yun Jae) [Github](http://github.com/mealsOrder)
-email : 
+email : dbswo7007@gmail.com
 - 조세기 (Jo Segi) [Github](https://github.com/orgs/HV-Tech-Corporation/people/SegiJo)
 email :
 
