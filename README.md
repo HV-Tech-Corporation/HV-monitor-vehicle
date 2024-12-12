@@ -48,14 +48,23 @@ cmake .. \
 - **[`OCR Model`](/defaults/main/main.yml)** is a Paddle-OCR recognition model designed to recognize license plate numbers.
 
 
-#### Molecule (Optional)
+#### Edge Device (Raspberry5)
+- Processor: Broadcom BCM2712 \
+- GPU: VideoCore VII \
+- CPU Clock Speed: Quad-core @ 2.4GHz \
+- RAM: 4GB LPDDR4X-4267 SDRAM \
+- Maximum Power Consumption / Voltage: 5A @ 5V 
 
-- Molecule is used to test the various functionalities of the role.
-- Instructions on how to install Molecule can be found in the [Molecule website](https://molecule.readthedocs.io/en/latest/installation.html). *You will also need to install the Molecule plugins package and the Docker Python SDK.*
-- To run any of the NGINX Plus Molecule tests, you must first copy your NGINX Plus license to the role's [`files/license`](/files/license/) directory.
 
 ## Accident Cost Algorithm
-- Our project aims to visualize Accident Cost by QT Framework
+
+
+<img src="https://github.com/user-attachments/assets/11513875-55f8-45dc-bdba-14c4b81419d1" alt="">
+<img src="https://github.com/user-attachments/assets/6e5e4c5d-fab5-4ea0-b12b-491ea3350b4a" alt="">
+<img src="https://github.com/user-attachments/assets/5b2f6719-bfd5-49a6-a031-d3f4c4c4fae3" alt="">
+<img src="https://github.com/user-attachments/assets/edf6e42f-9237-411f-a319-0537622c45f4" alt="">
+<img src="https://github.com/user-attachments/assets/32e2b13c-26b6-4c27-bfbd-2f414e2fab15" alt="">
+
 
 
 
