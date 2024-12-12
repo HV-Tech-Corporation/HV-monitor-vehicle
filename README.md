@@ -65,7 +65,7 @@ R. However, upon comparing image data across frames, it was observed that graphs
 
 As a result, a new formula for calculating the risk factor 
 R
-R was developed. This formula reacts sensitively to the number of nodes, accounts for the number of graphs, and ensures diminishing impact as the values increase, effectively addressing the identified risks.
+R was developed. This formula reacts sensitively to the number of nodes, accounts for the number of graphs, and ensures diminishing impact as the values increase, effectively addressing the identified risks. [more]("https://github.com/HV-Tech-Corporation/monitor-vehicle-client/blob/main/README.md")
 
 
 <img src="https://github.com/user-attachments/assets/11513875-55f8-45dc-bdba-14c4b81419d1" alt="">
