@@ -61,7 +61,7 @@ cmake .. \
 
 <img src="https://github.com/user-attachments/assets/11513875-55f8-45dc-bdba-14c4b81419d1" alt="">
 <img src="https://github.com/user-attachments/assets/6e5e4c5d-fab5-4ea0-b12b-491ea3350b4a" alt="">
-<img src="https://github.com/user-attachments/assets/5b2f6719-bfd5-49a6-a031-d3f4c4c4fae3" alt="">
+<img src="https://github.com/user-attachments/assets/5b2f6719-bfd5-49a6-a031-d3f4c4c4fae3" alt="" width="350">
 <img src="https://github.com/user-attachments/assets/edf6e42f-9237-411f-a319-0537622c45f4" alt="">
 <img src="https://github.com/user-attachments/assets/32e2b13c-26b6-4c27-bfbd-2f414e2fab15" alt="">
 
