@@ -49,14 +49,23 @@ cmake .. \
 
 
 #### Edge Device (Raspberry5)
-- Processor: Broadcom BCM2712 \
-- GPU: VideoCore VII \
-- CPU Clock Speed: Quad-core @ 2.4GHz \
-- RAM: 4GB LPDDR4X-4267 SDRAM \
+- Processor: Broadcom BCM2712 
+- GPU: VideoCore VII 
+- CPU Clock Speed: Quad-core @ 2.4GHz 
+- RAM: 4GB LPDDR4X-4267 SDRAM 
 - Maximum Power Consumption / Voltage: 5A @ 5V 
 
 
 ## Accident Cost Algorithm
+This algorithm manages graph information and operations, utilizing the union-find data structure for efficient cycle detection and vertex connection. Its key functionalities include adding edges, finding root nodes, and merging sets, while Kruskal's algorithm is employed to construct the Minimum Spanning Tree (MST). For disconnected graphs, the algorithm identifies the MST for each component to form a Minimum Spanning Forest (MSF).
+
+The weight calculation is performed by summing the nodes and costs of each MSF component to derive the total cost. Initially, a lower cost was interpreted as a shorter distance between vehicles, indicating a higher likelihood of collision or risk. This value was used to calculate the risk factor 
+R
+R. However, upon comparing image data across frames, it was observed that graphs with a larger number of nodes posed a greater risk.
+
+As a result, a new formula for calculating the risk factor 
+R
+R was developed. This formula reacts sensitively to the number of nodes, accounts for the number of graphs, and ensures diminishing impact as the values increase, effectively addressing the identified risks.
 
 
 <img src="https://github.com/user-attachments/assets/11513875-55f8-45dc-bdba-14c4b81419d1" alt="">
