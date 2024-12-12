@@ -1,8 +1,8 @@
 ## Project
 This project is designed to analyze the probability of vehicle accidents using computer vision.
 
-![bestmodel_1](https://github.com/user-attachments/assets/966650ed-8b8a-49f8-b774-9d16ede31880)
-![bestmodel_2](https://github.com/user-attachments/assets/db2de0b1-84d0-42fb-9f37-5815caec8190)
+<img src="https://github.com/user-attachments/assets/966650ed-8b8a-49f8-b774-9d16ede31880" alt="bestmodel_1" width="350"/>
+<img src="https://github.com/user-attachments/assets/db2de0b1-84d0-42fb-9f37-5815caec8190" alt="bestmodel_2" width="350"/>
 
 
 ## TEAM
