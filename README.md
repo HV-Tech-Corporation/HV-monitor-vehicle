@@ -20,50 +20,32 @@ Depending on our Monitoring System use case, you might need to know what feature
 |---------|--------------|
 | BestShot |  Caputre Image by track ID ( YOLO, SORT )
 | OCR | Vehicle plate license ( OpenCV, PaddleOCR ) |
-| Accident Cost | A compatible control plane and (optionally) an NGINX One SaaS console data plane token |
-
-
-
-## Accident Cost Algorithm
-- Our project aims to visualize 
-
+| Accident Cost | Calculate the Accident Cost based on vision parameters: [Node, Cluster, Distance] |
 
 ## Installation
 
-
 ### Package  (Required)
 
-- [TVM](https://github.com/apache/tvm) 
-
+1. [TVM ](https://github.com/apache/tvm)
 ```bash
-git clone --recursive https://github.com/apache/tvm.git
-cd tvm
-git submodule init
-git submodule update --recursive
-mkdir -p build
-cd build
-
-
-
+cmake .. \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DUSE_LLVM=ON \
+  -DUSE_CUDA=OFF \   // If you use GPU, -DUSE_CUDA=ON
+  -DUSE_OPENCL=OFF \
+  -DUSE_VULKAN=OFF \
+  -DUSE_METAL=OFF
 ```
-- [OpenCV](https://github.com/opencv/opencv) 
-- [Boost](https://github.com/boostorg/boost) 
+2. [OpenCV](https://github.com/opencv/opencv) 4.8.0
+3. [Boost](https://github.com/boostorg/boost) 1.86.0
+4. [QT](https://www.qt.io/ko-kr/) 5.15.8
+5. [Gstreamer](https://github.com/GStreamer/gstreamer) 1.24.9 
 
-#### Ansible Lint (Optional)
+#### AI Model (Optional)
 
-- Ansible Lint is used to lint the role for both Ansible best practices and potential Ansible/YAML issues.
-- Instructions on how to install Ansible Lint can be found in the [Ansible Lint website](https://ansible.readthedocs.io/projects/lint/installing/).
-- Once installed, using Ansible Lint is as easy as running:
+- **[`Detection model`](/defaults/main/main.yml)** is a 4-bit quantization-optimized YOLOv5, specifically designed for detection tasks on ARM-based targets.
+- **[`OCR Model`](/defaults/main/main.yml)** is a Paddle-OCR recognition model designed to recognize license plate numbers.
 
-  ```bash
-  ansible-lint
-  ```
-
-- For ease of use, you can install and/or upgrade Ansible Lint by running the following command on your Ansible host:
-
-  ```bash
-  pip install -r https://raw.githubusercontent.com/nginxinc/ansible-role-nginx/main/.github/workflows/requirements/requirements_ansible_lint.txt
-  ```
 
 #### Molecule (Optional)
 
@@ -71,7 +53,8 @@ cd build
 - Instructions on how to install Molecule can be found in the [Molecule website](https://molecule.readthedocs.io/en/latest/installation.html). *You will also need to install the Molecule plugins package and the Docker Python SDK.*
 - To run any of the NGINX Plus Molecule tests, you must first copy your NGINX Plus license to the role's [`files/license`](/files/license/) directory.
 
-
+## Accident Cost Algorithm
+- Our project aims to visualize Accident Cost by QT Framework
 
 
 
