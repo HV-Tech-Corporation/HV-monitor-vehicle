@@ -8,7 +8,7 @@ find_package(Boost REQUIRED COMPONENTS system filesystem)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 # TVM 경로 설정
-set(TVM_PATH /Users/gyujinkim/Desktop/Ai/TinyEngine3/tvm)
+set(TVM_PATH /Users/kimgyujin/Desktop/STUDY/AI/TVM/tvm)
 include_directories("${TVM_PATH}/include")
 include_directories("${TVM_PATH}/3rdparty/dmlc-core/include")
 include_directories("${TVM_PATH}/3rdparty/dlpack/include")
@@ -17,8 +17,8 @@ link_directories("${TVM_PATH}/build")
 
 # GStreamer 라이브러리 찾기
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
-pkg_check_modules(GSTREAMER_APP REQUIRED gstreamer-app-1.0)
+# pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
+# pkg_check_modules(GSTREAMER_APP REQUIRED gstreamer-app-1.0)
 
 # GStreamer 라이브러리 경로 추가
 link_directories(${GSTREAMER_LIBRARY_DIRS})

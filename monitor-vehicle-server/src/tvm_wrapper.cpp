@@ -193,7 +193,6 @@ std::vector<api::detection::DetectedObject> ProcessYOLOOutput(tvm::runtime::NDAr
 void api::detection::detect(
     std::atomic<bool>& start_detection,
     std::atomic<bool>& pause_detection,
-    std::atomic<bool>& shared_frame_updated,
     std::mutex& frame_mutex,
     std::condition_variable& detection_cv,
     cv::Mat& shared_frame
@@ -259,7 +258,6 @@ void api::detection::detect(
             }
         }
         
-        shared_frame_updated.store(true);
         detection_cv.notify_one();
         
         lock.unlock();  // 락을 해제하여 외부에서 frame을 접근할 수 있도록 함
