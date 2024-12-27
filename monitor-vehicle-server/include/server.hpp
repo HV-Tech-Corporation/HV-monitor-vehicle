@@ -63,7 +63,7 @@ namespace server {
              * 
              * @param socket The client socket connection.
              */
-            void handle_streaming_request(std::shared_ptr<boost::asio::ip::tcp::socket> shared_socket);
+            void handle_request(std::shared_ptr<boost::asio::ip::tcp::socket> shared_socket);
             // GStreamer 파이프라인
             std::string gstreamer_pipeline() const;
             // 비디오 스트리밍 함수
@@ -74,14 +74,24 @@ namespace server {
         void start_server(uint16_t port);  
         void response(std::shared_ptr<boost::asio::ip::tcp::socket> shared_socket, server::http_response::response_type status);
 
-        struct StreamingStatus {
-            std::atomic<bool> is_streaming;
-            std::atomic<bool> is_paused;
-            std::atomic<bool> is_rewind;
-            std::atomic<bool> is_start_detection;
-            std::atomic<bool> is_pause_detection;
+        enum class StreamingState {
+            READY,
+            STREAMING,
+            PAUSED,
+            REWIND,
+        };
 
-            StreamingStatus();
+        enum class DetectionState {
+            READY,
+            START,
+            PAUSED,
+        };
+
+        struct StreamingStatus {
+            std::atomic<StreamingState> streaming_state;
+            std::atomic<DetectionState> detection_state;
+
+            StreamingStatus() : streaming_state(StreamingState::Ready), detection_state(DetectionState::Ready) {}
         };
 
         const std::string video_path = "/Users/gyujinkim/Desktop/Github/monitor-vehicle-api/server/traffic_jam2.mp4";

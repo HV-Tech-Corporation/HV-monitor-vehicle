@@ -2,27 +2,18 @@
 
 namespace server{
     namespace rtp {
-        StreamingStatus::StreamingStatus() : is_streaming(false), is_paused(false), is_rewind(false), is_start_detection(false), is_pause_detection(false) {};
         StreamingStatus streaming_status;
 
-        void start_streaming() {
-            streaming_status.is_streaming.store(true);
+        void set_streaming_state(StreamingState state) {
+            streaming_status.streaming_state.store(state);
+        }
+
+        void set_detection_state(DetectionState state) {
+            streaming_status.detection_state.store(state);
         }
 
         void pause_streaming() {
-           streaming_status.is_paused.store(true);
-        }
-
-        void rewind_streaming() {
-            streaming_status.is_rewind.store(true);
-        }
-
-        void start_detection() {
-            streaming_status.is_start_detection.store(true);
-        }
-
-        void pause_detection() {
-            streaming_status.is_pause_detection.store(true);
+            std::this_thread::sleep_for(std::chrono::milliseconds(30));
         }
 
         void response(std::shared_ptr<boost::asio::ip::tcp::socket> socket, server::http_response::response_type status) {
@@ -35,34 +26,52 @@ namespace server{
                 auto buffers = res.to_buffers();
                 boost::asio::write(*socket, buffers);
             } catch (const std::exception& e) {
-                BOOST_LOG_TRIVIAL(error) << "Error: response to  client : " << e.what();
+                BOOST_LOG_TRIVIAL(error) << "response error : " << e.what();
             }
         }
 
-        void handle_request(std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
+        void app::handle_request(std::shared_ptr<boost::asio::ip::tcp::socket> socket) {
             try {
                 boost::asio::streambuf request;
                 boost::asio::read_until(*socket, request, "\r\n");
                 std::istream request_stream(&request);
                 std::string method, path;
                 request_stream >> method >> path;
+
                 if (method == "GET" && path == "/start_stream") {
-                    if(streaming_status.is_streaming.load()) {
+                    if(streaming_status.streaming_state.load() == StreamingState::STREAMING) {
                         response(socket, server::http_response::response_type::bad_request);
                         return;
                     }
 
                     response(socket, server::http_response::response_type::ok);
-                    start_streaming();
+                    set_streaming_state(StreamingState::STREAMING);
 
                     std::string video_path = "";
 
                     std::thread([this, socket, video_path]() mutable {
                         try {
-                            
+                            process_streaming(video_path, socket);
+                        } catch (const std::exception& e) {
+                            BOOST_LOG_TRIVIAL(error) << "streaming thread : " << e.what();
                         }
-                    })    
-
+                    }).detach();    
+                }
+                else if  (method == "GET" && path == "/pause_stream") {
+                    response(socket, server::http_response::response_type::ok);
+                    set_streaming_state(StreamingState::PAUSED);
+                }
+                else if (method == "GET" && path == "/resume_stream") {
+                    response(socket, server::http_response::response_type::ok);
+                    set_streaming_state(StreamingState::REWIND);
+                }
+                else if (method == "GET" && path == "/start_detection") {
+                    response(socket, server::http_response::response_type::ok);
+                    set_detection_state(DetectionState::START);
+                }
+                else if (method == "GET" && path == "/pause_detection") {
+                    response(socket, server::http_response::response_type::ok);
+                    set_detection_state(DetectionState::PAUSED);
                 }
             } catch (const std::exception& e) {
                 response(socket, server::http_response::response_type::internal_server_error);
@@ -90,6 +99,46 @@ namespace server{
             }
 
             int frame_index = 0;
+            cv::Mat frame;
+
+            while (true) {
+                switch(streaming_status.streaming_state.load()) {
+                    case StreamingState::READY : {
+                        break;
+                    }
+
+                    case StreamingState::STREAMING : {
+                        break;
+                    }
+
+                    case StreamingState::PAUSED :  {
+                        pause_streaming();
+                        continue;
+                    }
+
+                    case StreamingState::REWIND : {
+                        cap.set(cv::CAP_PROP_POS_FRAMES, 0);
+                        frame_index = 0;
+                        break;
+                    }
+                }
+
+                cap >> frame;
+                if (frame.empty()) {
+                    set_streaming_state(StreamingState::REWIND);
+                    continue;
+                }
+
+                switch (streaming_status.detection_state.load())
+                {
+                    case DetectionState::READY :
+                    break;
+                    
+                    case DetectionState::START :
+
+                    case DetectionState::PAUSED :
+                }
+            }
             
         }
 
