@@ -10,14 +10,6 @@
 
 namespace api {
     namespace detection {
-        struct DetectedObject {
-            int track_id;
-            int class_id;
-            float conf;
-            bool is_matched = false;
-            cv::Rect bbox;
-        };
-
         const static std::vector<std::string> COCO_CLASS_80 = {
             "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat", "traffic light", 
             "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", 
@@ -51,7 +43,7 @@ namespace api {
             cv::Mat bestShot_frame
         );
 
-        
+        extern tvm::runtime::Module loaded_lib;
         extern tvm::runtime::Module mod;
         extern tvm::runtime::PackedFunc set_input;
         extern tvm::runtime::PackedFunc run;
