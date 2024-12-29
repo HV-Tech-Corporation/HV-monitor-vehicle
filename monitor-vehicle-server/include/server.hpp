@@ -91,7 +91,7 @@ namespace server {
             std::atomic<StreamingState> streaming_state;
             std::atomic<DetectionState> detection_state;
 
-            StreamingStatus() : streaming_state(StreamingState::Ready), detection_state(DetectionState::Ready) {}
+            StreamingStatus() : streaming_state(StreamingState::READY), detection_state(DetectionState::READY) {}
         };
 
         const std::string video_path = "/Users/gyujinkim/Desktop/Github/monitor-vehicle-api/server/traffic_jam2.mp4";

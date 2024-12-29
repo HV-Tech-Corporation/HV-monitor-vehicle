@@ -1,6 +1,8 @@
 #ifndef TVM_WRAPPER_
 #define TVM_WRAPPER_
 
+#include "tracker.hpp"
+#include "line.hpp"
 #include <tvm/runtime/module.h>
 #include <tvm/runtime/packed_func.h>
 #include <tvm/runtime/ndarray.h>
@@ -18,6 +20,12 @@ namespace api {
             cv::Rect bbox;
         };
 
+        struct GraphModule {
+            tvm::runtime::PackedFunc input_func;
+            tvm::runtime::PackedFunc run_func;
+            tvm::runtime::PackedFunc output_func;
+        };
+
         const static std::vector<std::string> COCO_CLASS_80 = {
             "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat", "traffic light", 
             "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", 
@@ -30,7 +38,7 @@ namespace api {
             "teddy bear", "hair drier", "toothbrush"
         };
 
-        void load_model(const std::string& model_path, const std::string device = "cpu");
+        GraphModule load_tvm_runtime_graph_module(const std::string& model_path, const std::string device = "cpu");
 
         void detect(
             std::atomic<bool>& start_detection,
