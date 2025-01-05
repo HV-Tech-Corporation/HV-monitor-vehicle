@@ -3,6 +3,8 @@
 
 #include "tracker.hpp"
 #include "line.hpp"
+#include "state.hpp"
+
 #include <tvm/runtime/module.h>
 #include <tvm/runtime/packed_func.h>
 #include <tvm/runtime/ndarray.h>
@@ -10,7 +12,23 @@
 #include <thread>
 #include <chrono>
 
+
+/**
+ * @file tvm_wrapper.hpp
+ * @brief Handles Detect thread if the DetectionState is START.
+ * 
+ * This file contains functions that handle video frame to provide  vehicle localization, Line ID, Count.
+ * Load AI Graph module by TVM Runtime ( MobileNetV2 + SSD , YOLOv5n or YOLOv5s )
+ * 
+ */
 namespace api {
+    /**
+         * @class Detection
+         * @brief Load AI Graph Moudle by tvm runtime ( Detect, OCR )
+         *
+         * This class provides functions to Detect Object, OCR, Line ID, Vehicle count
+         * Graph Layer 
+    */
     namespace detection {
         struct DetectedObject {
             int track_id;
@@ -41,30 +59,11 @@ namespace api {
         GraphModule load_tvm_runtime_graph_module(const std::string& model_path, const std::string device = "cpu");
 
         void detect(
-            std::atomic<bool>& start_detection,
-            std::atomic<bool>& pause_detection,
+            DetectionState detection_state,
             std::mutex& frame_mutex,
-            std::condition_variable& detection_cv,
             cv::Mat& shared_frame
         );
-
-        void preprocess_detect(
-            const std::string& video_path,
-            std::unordered_map<int, cv::Mat>& detected_frames,
-            std::mutex& detected_frames_mutex,
-            std::unordered_map<int, int>& kruskal_results_per_frames,
-            std::mutex& kruskal_results_per_frames_mutex,
-            std::atomic<bool>& preload_complete,
-            std::mutex& bestShot_mutex,
-            cv::Mat bestShot_frame
-        );
-
         
-        extern tvm::runtime::Module mod;
-        extern tvm::runtime::PackedFunc set_input;
-        extern tvm::runtime::PackedFunc run;
-        extern tvm::runtime::PackedFunc get_output;
-        extern DLDevice dev;
     } // namespace detection
 }// namsespace api
 #endif // TVM_WRAPPER_

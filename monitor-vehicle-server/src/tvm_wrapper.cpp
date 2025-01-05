@@ -79,7 +79,10 @@ namespace api {
             }
         }
 
-        std::vector<api::detection::DetectedObject> descript_tvm_output_data(tvm::runtime::NDArray output, const std::vector<std::string>& coco_class, cv::Mat& frame) {
+        std::vector<api::detection::DetectedObject> descript_tvm_output_data(
+            tvm::runtime::NDArray output, const std::vector<std::string>& coco_class, 
+            cv::Mat& frame, std::atomic<bool>& is_detect_thread_complete
+            ) {
             const int64_t* shape = output.Shape().data();
             int num_detections = shape[1];
 
@@ -151,19 +154,18 @@ namespace api {
 
         std::pair<cv::Scalar, std::string> get_warning_level(double distance) {
             if (distance < max_distance / 4.0) {
-                return {cv::Scalar(255, 255, 255), "1"}; // 밝은 빨간색
+                return {cv::Scalar(255, 255, 255), "1"}; 
             } else if (distance < max_distance / 3.0) {
-                return {cv::Scalar(50, 50, 255), "2"}; // 어두운 빨간색
+                return {cv::Scalar(50, 50, 255), "2"}; 
             } else if (distance < 2 * max_distance / 3.0) {
-                return {cv::Scalar(0, 165, 255), "3"}; // 주황색
+                return {cv::Scalar(0, 165, 255), "3"}; 
             } else {
-                return {cv::Scalar(0x4A, 0xB2, 0x2C), "4"}; // 초록색
+                return {cv::Scalar(0x4A, 0xB2, 0x2C), "4"}; 
             }
         }
 
         void detect(
-            std::atomic<bool>& is_start_detection,
-            std::atomic<bool>& is_pause_detection,
+            DetectionState detection_state
             std::mutex& frame_mutex,
             cv::Mat& shared_frame
         ) {
@@ -175,7 +177,7 @@ namespace api {
             ObjectTracker tracker;
 
 
-            while(is_start_detection) {
+            while(detection_state == DetectionState::START) {
                 std::unique_lock<std::mutex> lock(frame_mutex);
                 
                 if(shared_frame.empty()) {
@@ -260,7 +262,7 @@ namespace api {
 
                         std::sort(current_pos.begin(), current_pos.end(),
                         [](const std::pair<int, cv::Point> &a, const std::pair<int, cv::Point> &b) {
-                            return a.second.y < b.second.y; // y 좌표 기준 오름차순 정렬
+                            return a.second.y < b.second.y; 
                         });
 
                         for (size_t i = 1; i < current_pos.size(); ++i) {
@@ -273,15 +275,11 @@ namespace api {
                         int next_id = track_ids_by_lane[idx + 1];
                         auto &next_points = track_points_by_objects_bbox[next_id];
 
-                        // 다음 ID의 points와 연결
+                        //  Connects to the points of the next sorted ID
                         for (const auto &[node1, p1] : current_pos) {
                             for (const auto &[node2, p2] : next_points) {
                                 double distance = cv::norm(p2 - p1);
-
-                                // 거리 구간에 따른 색상과 긴급 수준
                                 auto [color, emergency_level] = get_warning_level(distance);
-
-                                // 선 그리기
                                 cv::line(shared_frame, p1, p2, color, 2);
                             }
                         }
@@ -292,7 +290,8 @@ namespace api {
                         }
                     }
 
-                    
+                    is_detect_thread_complete.store(true);
+                    cap.release();
                 }
 
             }

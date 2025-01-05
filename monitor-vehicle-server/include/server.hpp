@@ -16,6 +16,7 @@
 
 #include "tvm_wrapper.hpp"
 #include "response.hpp" 
+#include "state.hpp"
 
 #include <boost/log/trivial.hpp>
 #include <boost/filesystem.hpp>
@@ -28,6 +29,7 @@
 #include <mutex>
 #include <fstream>
 #include <sstream>
+
 /**
  * @class server::rtp::app
  * @brief Handles video streaming and detection requests.
@@ -74,18 +76,6 @@ namespace server {
         void start_server(uint16_t port);  
         void response(std::shared_ptr<boost::asio::ip::tcp::socket> shared_socket, server::http_response::response_type status);
 
-        enum class StreamingState {
-            READY,
-            STREAMING,
-            PAUSED,
-            REWIND,
-        };
-
-        enum class DetectionState {
-            READY,
-            START,
-            PAUSED,
-        };
 
         struct StreamingStatus {
             std::atomic<StreamingState> streaming_state;

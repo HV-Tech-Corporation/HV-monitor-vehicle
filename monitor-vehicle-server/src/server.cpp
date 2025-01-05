@@ -68,6 +68,7 @@ namespace server{
                 else if (method == "GET" && path == "/start_detection") {
                     response(socket, server::http_response::response_type::ok);
                     set_detection_state(DetectionState::START);
+                    api::detection::detect(streaming_status.detection_state, )
                 }
                 else if (method == "GET" && path == "/pause_detection") {
                     response(socket, server::http_response::response_type::ok);

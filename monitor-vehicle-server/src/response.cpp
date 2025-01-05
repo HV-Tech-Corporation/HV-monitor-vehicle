@@ -107,9 +107,8 @@ namespace server {
                     return response_body::not_found;
                 case response_type::internal_server_error:
                     return response_body::internal_server_error;
-            
-            default:
-                break;
+                default:            
+                    return response_body::internal_server_error;        
             }
         }
 
