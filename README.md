@@ -44,7 +44,7 @@ cmake .. \
 
 #### AI Model (Optional)
 
-- **[`Detection model`](/defaults/main/main.yml)** is a 4-bit quantization-optimized YOLOv5, specifically designed for detection tasks on ARM-based targets.
+- **[`Detection model`](/defaults/main/main.yml)** is a float 16-bit optimized YOLOv5, specifically designed for detection tasks on ARM-based targets.
 - **[`OCR Model`](/defaults/main/main.yml)** is a Paddle-OCR recognition model designed to recognize license plate numbers.
 
 
